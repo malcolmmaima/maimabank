@@ -13,4 +13,7 @@ migrateup:
 migratedown:
 	migrate -path db/migration -database "postgresql://root:7915@localhost:5432/maima_bank?sslmode=disable" -verbose down
 
+sqlc: 
+	docker run --rm -v "%cd%:/src" -w /src kjconroy/sqlc generate
+
 .PHONY: postgres createdb dropdb migrateup migratedown
