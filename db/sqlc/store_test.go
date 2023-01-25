@@ -18,7 +18,7 @@ func TestTransferTx(t *testing.T) {
 	amount := int64(10)
 
 	errs := make(chan error, n)
-	results := make(chan TransferTxResult, n)
+	results := make(chan TransferTxResult)
 
 	for i := 0; i < n; i++ {
 		go func() {
@@ -75,7 +75,6 @@ func TestTransferTx(t *testing.T) {
 		_, err = store.GetEntry(context.Background(), toEntry.ID)
 		require.NoError(t, err)
 
-		// check accounts balance
 		// TODO: check account balance
 
 	}
