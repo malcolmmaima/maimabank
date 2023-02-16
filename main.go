@@ -5,6 +5,7 @@ import (
 	"log"
 
 	_ "github.com/lib/pq"
+	"github.com/malcolmmaima/maimabank/api"
 	db "github.com/malcolmmaima/maimabank/db/sqlc"
 )
 
@@ -21,7 +22,7 @@ func main() {
 	}
 
 	store := db.NewStore(conn)
-	server := server.NewServer(store)
+	server := api.NewServer(store)
 
 	err = server.Start(serverAddress)
 	if err != nil {
