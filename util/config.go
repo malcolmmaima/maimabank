@@ -8,7 +8,7 @@ type Config struct {
 	ServerAddr string `mapstructure:"SERVER_ADDRESS"`
 }
 
-func loadConfig(path string) (config Config, err error) {
+func LoadConfig(path string) (config Config, err error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
@@ -16,7 +16,7 @@ func loadConfig(path string) (config Config, err error) {
 
 	err = viper.ReadInConfig()
 	if err != nil {
-		return config, err
+		return
 	}
 
 	err = viper.Unmarshal(&config)

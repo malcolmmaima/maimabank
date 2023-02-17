@@ -7,15 +7,16 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/malcolmmaima/maimabank/api"
 	db "github.com/malcolmmaima/maimabank/db/sqlc"
+	"github.com/malcolmmaima/maimabank/util"
 )
 
 func main() {
-	config, err := util.loadConfig(".")
+	config, err := util.LoadConfig(".")
 	if err != nil {
 		log.Fatal("cannot load config: ", err)
 	}
 
-	conn, err := sql.Open(config.DBDriver, config.DbSource)
+	conn, err := sql.Open(config.DbDriver, config.DbSource)
 	if err != nil {
 		log.Fatal("cannot connect to db: ", err)
 	}
@@ -23,7 +24,7 @@ func main() {
 	store := db.NewStore(conn)
 	server := api.NewServer(store)
 
-	err = server.Start(serverAddress)
+	err = server.Start(config.ServerAddr)
 	if err != nil {
 		log.Fatal("cannot start server: ", err)
 	}
