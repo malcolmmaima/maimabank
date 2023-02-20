@@ -2,13 +2,15 @@
 
 This service offers APIs that enable the frontend to accomplish the following tasks:
 
-1. Establish and oversee bank accounts that consist of the account owner's name, balance, and currency.
-2. Document all balance adjustments made to each account. Thus, every time an amount is added to or subtracted from an account, an account entry record is generated.
-3. Execute a fund transfer between two accounts. This should occur as a transaction, guaranteeing that both accounts' balances are either successfully updated or not updated at all.
+1. Create and manage bank accounts, which consist of the account owner's name, balance, and currency.
+2. Record all balance changes made to each account. Every time an amount is added to or subtracted from an account, an account entry record is generated.
+3. Transfer funds between two accounts. This happens as a transaction, ensuring that both accounts' balances are either successfully updated or not updated at all.
 
 ## Setup local development
 
 ### Install tools
+
+Before setting up the service locally, you need to install the following tools:
 
 - [Docker desktop](https://www.docker.com/products/docker-desktop)
 - [TablePlus](https://tableplus.com/)
@@ -64,6 +66,8 @@ Coming soon...
 
 ### How to generate code
 
+Use the following commands to generate code:
+
 - Generate schema SQL file with DBML:
 
   ```bash
@@ -89,6 +93,8 @@ Coming soon...
   ```
 
 ### How to run
+
+Use the following commands to run the service:
 
 - Run server:
 
