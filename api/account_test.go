@@ -186,17 +186,9 @@ func TestListAccountsAPI(t *testing.T) {
 			server := NewServer(store)
 			recorder := httptest.NewRecorder()
 
-			var httpRequest *http.Request
-			var err error
-
-			// if name is invalidPageID, then set page_id to 0
-			if tc.name == "InvalidPageID" {
-				httpRequest, err = http.NewRequest(http.MethodGet, "/accounts?page_id=0&page_size=5", nil)
-				require.NoError(t, err)
-			} else {
-				httpRequest, err = http.NewRequest(http.MethodGet, "/accounts?page_id=1&page_size=5", nil)
-				require.NoError(t, err)
-			}
+			url := fmt.Sprintf("/accounts?page_id=%d&page_size=5", tc.page_id)
+			httpRequest, err := http.NewRequest(http.MethodGet, url, nil)
+			require.NoError(t, err)
 
 			server.router.ServeHTTP(recorder, httpRequest)
 			tc.checkResponse(t, recorder)
