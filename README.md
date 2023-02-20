@@ -1,6 +1,6 @@
 # maimabank
 
-This service offers APIs that enable the frontend to accomplish the following tasks:
+MaimaBank is a service that provides APIs to enable the frontend to perform the following tasks:
 
 1. Create and manage bank accounts, which consist of the account owner's name, balance, and currency.
 2. Record all balance changes made to each account. Every time an amount is added to or subtracted from an account, an account entry record is generated.
