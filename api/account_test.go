@@ -106,6 +106,104 @@ func TestGetAccountAPI(t *testing.T) {
 	}
 }
 
+func TestListAccountsAPI(t *testing.T) {
+	accounts := []db.Account{
+		createRandomAccount(),
+		createRandomAccount(),
+		createRandomAccount(),
+	}
+
+	testCases := []struct {
+		name string
+		page_id int64
+		buildStubs func(store *mockdb.MockStore)
+		checkResponse func(t *testing.T, recorder *httptest.ResponseRecorder)
+	}{
+		{
+			name: "OK",
+			page_id: 1,
+			buildStubs: func(store *mockdb.MockStore) {
+				arg := db.ListAccountsParams{
+					Limit: 5,
+					Offset: 0,
+				}
+
+				store.EXPECT().
+					ListAccounts(gomock.Any(), gomock.Eq(arg)).
+					Times(1).
+					Return(accounts, nil)
+			},
+			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
+				require.Equal(t, http.StatusOK, recorder.Code)
+				requireBodyMatchAccounts(t, recorder.Body, accounts)
+			},
+		},
+		{
+			name: "InternalError",
+			page_id: 1,
+			buildStubs: func(store *mockdb.MockStore) {
+				arg := db.ListAccountsParams{
+					Limit: 5,
+					Offset: 0,
+				}
+
+				store.EXPECT().
+					ListAccounts(gomock.Any(), gomock.Eq(arg)).
+					Times(1).
+					Return(nil, sql.ErrConnDone)
+			},
+			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
+				require.Equal(t, http.StatusInternalServerError, recorder.Code)
+			},
+		},
+		{
+			name: "InvalidPageID",
+			page_id: 0,
+			buildStubs: func(store *mockdb.MockStore) {
+				store.EXPECT().
+					ListAccounts(gomock.Any(), gomock.Any()).
+					Times(0)
+			},
+			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
+				require.Equal(t, http.StatusBadRequest, recorder.Code)
+			},
+		},
+	}
+
+	for i := range testCases {
+		tc := testCases[i]
+		t.Run(tc.name, func(t *testing.T) {
+			// New mock store
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+
+			store := mockdb.NewMockStore(ctrl)
+
+			// Build stubs for the mock store
+			tc.buildStubs(store)
+
+			// start a test http server
+			server := NewServer(store)
+			recorder := httptest.NewRecorder()
+
+			var httpRequest *http.Request
+			var err error
+
+			// if name is invalidPageID, then set page_id to 0
+			if tc.name == "InvalidPageID" {
+				httpRequest, err = http.NewRequest(http.MethodGet, "/accounts?page_id=0&page_size=5", nil)
+				require.NoError(t, err)
+			} else {
+				httpRequest, err = http.NewRequest(http.MethodGet, "/accounts?page_id=1&page_size=5", nil)
+				require.NoError(t, err)
+			}
+
+			server.router.ServeHTTP(recorder, httpRequest)
+			tc.checkResponse(t, recorder)
+		})
+	}
+}
+
 func createRandomAccount() db.Account {
 	return db.Account{
 		ID:        util.RandomInt(1, 1000),
@@ -123,4 +221,14 @@ func requireBodyMatchAccount(t *testing.T, body *bytes.Buffer, account db.Accoun
 	err = json.Unmarshal(data, &gotAccount)
 	require.NoError(t, err)
 	require.Equal(t, account, gotAccount)
+}
+
+func requireBodyMatchAccounts(t *testing.T, body *bytes.Buffer, accounts []db.Account) {
+	data, err := io.ReadAll(body)
+	require.NoError(t, err)
+
+	var gotAccounts []db.Account
+	err = json.Unmarshal(data, &gotAccounts)
+	require.NoError(t, err)
+	require.Equal(t, accounts, gotAccounts)
 }
