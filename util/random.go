@@ -30,6 +30,11 @@ func RandomOwner() string {
 	return "test-" + RandomString(10)
 }
 
+// A RandomEmail returns a random email address.
+func RandomEmail() string {
+	return RandomString(10) + "@maimabank.com"
+}
+
 // A RandomMoney returns a random amount of money.
 func RandomMoney() int64 {
 	return RandomInt(0, 1000000)
