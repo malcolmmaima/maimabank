@@ -205,6 +205,7 @@ func createRandomAccount() db.Account {
 	}
 }
 
+// requireBodyMatchAccount checks if the body is a JSON encoded account and it matches with the given account.
 func requireBodyMatchAccount(t *testing.T, body *bytes.Buffer, account db.Account) {
 	data, err := io.ReadAll(body)
 	require.NoError(t, err)
@@ -215,6 +216,7 @@ func requireBodyMatchAccount(t *testing.T, body *bytes.Buffer, account db.Accoun
 	require.Equal(t, account, gotAccount)
 }
 
+// requireBodyMatchAccounts checks if the body is a JSON encoded list of accounts and it matches with the given list of accounts.
 func requireBodyMatchAccounts(t *testing.T, body *bytes.Buffer, accounts []db.Account) {
 	data, err := io.ReadAll(body)
 	require.NoError(t, err)

@@ -61,7 +61,7 @@ func (server *Server) checkAccountCurrency(ctx *gin.Context, accountID int64, cu
 	}
 
 	if account.Currency != currency {
-		err := fmt.Errorf("Account currency mismatch. Expected %s, got %s", currency, account.Currency)
+		err := fmt.Errorf("account currency mismatch. expected %s, got %s", currency, account.Currency)
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return false
 	} 
