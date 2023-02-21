@@ -1,4 +1,4 @@
-# maimabank
+# Maima Bank
 
 MaimaBank is a service that provides APIs to enable the frontend to perform the following tasks:
 
