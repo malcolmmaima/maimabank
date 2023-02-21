@@ -44,7 +44,7 @@ jobs:
           which migrate
 
       - name: Run migrations
-        run: echo y | make migratedown
+        run: make migrateup
 
       - name: Test
         run: make test
