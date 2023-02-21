@@ -35,6 +35,34 @@
 			"response": []
 		},
 		{
+			"name": "Money Transfer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"from_account_id\": 90,\r\n    \"to_account_id\": 100,\r\n    \"amount\": 100000,\r\n    \"currency\":\"EUR\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/transfers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get Account",
 			"request": {
 				"method": "GET",
