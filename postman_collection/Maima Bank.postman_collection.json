@@ -35,6 +35,34 @@
 			"response": []
 		},
 		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"malcolmmaima\",\r\n    \"full_name\":\"Malcolm maima\",\r\n    \"email\":\"malcolmmaima@maimabank.com\",\r\n    \"password\":\"secret\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Money Transfer",
 			"request": {
 				"method": "POST",
