@@ -11,7 +11,6 @@ import (
 
 func TestCreateUser(t *testing.T) {
 	createRandomUser(t)
-
 }
 
 
@@ -53,4 +52,3 @@ func TestGetUser(t *testing.T) {
 	require.WithinDuration(t, user1.PasswordChangedAt, user2.PasswordChangedAt, time.Second)
 	require.WithinDuration(t, user1.CreatedAt, user2.CreatedAt, time.Second)
 }
-
