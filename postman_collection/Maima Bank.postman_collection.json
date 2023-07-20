@@ -116,7 +116,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/accounts?page_id=1&page_size=5",
+					"raw": "http://localhost:8080/accounts?page_id=1&page_size=10&owner=malcolmmaima",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -132,7 +132,11 @@
 						},
 						{
 							"key": "page_size",
-							"value": "5"
+							"value": "10"
+						},
+						{
+							"key": "owner",
+							"value": "malcolmmaima"
 						}
 					]
 				}
