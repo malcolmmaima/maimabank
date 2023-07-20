@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/malcolmmaima/maimabank/util"
 	"github.com/stretchr/testify/require"
 )
@@ -49,5 +50,25 @@ func TestExpiredJWTToken(t *testing.T) {
 	payload, err := maker.VerifyToken(token)
 	require.Error(t, err)
 	require.EqualError(t, err, ErrExpiredToken.Error())
+	require.Nil(t, payload)
+}
+
+// Sad path
+func TestInvalidJWTTokenAlgorithm(t *testing.T) {
+	payload, err := NewPayload(util.RandomOwner(), time.Minute)
+	require.NoError(t, err)
+
+	jwtToken := jwt.NewWithClaims(jwt.SigningMethodNone, payload)
+	token, err := jwtToken.SignedString(jwt.UnsafeAllowNoneSignatureType)
+
+	require.NoError(t, err)
+	require.NotEmpty(t, token)
+
+	maker, err := NewJWTMaker(util.RandomString(32))
+	require.NoError(t, err)
+
+	payload, err = maker.VerifyToken(token)
+	require.Error(t, err)
+	require.EqualError(t, err, ErrInvalidToken.Error())
 	require.Nil(t, payload)
 }

@@ -9,7 +9,7 @@ import (
 
 
 var ErrExpiredToken = errors.New("token has expired")
-var ErrInvalidToken = errors.New("token is invalid")
+var ErrInvalidToken = errors.New("invalid token signing method")
 
 // Payload is the output of the token creation process
 type Payload struct {
