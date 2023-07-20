@@ -35,6 +35,18 @@ func RandomEmail() string {
 	return RandomString(10) + "@maimabank.com"
 }
 
+// A RandomTimestamp returns a random timestamp.
+func RandomTimestamp() time.Time {
+	return RandomTimestampInRange(time.Now().Add(-time.Hour*1000), time.Now())
+}
+
+// A RandomTimestampInRange returns a random timestamp in the given range.
+func RandomTimestampInRange(min, max time.Time) time.Time {
+	delta := max.Unix() - min.Unix()
+	sec := rand.Int63n(delta) + min.Unix()
+	return time.Unix(sec, 0)
+}
+
 // A RandomMoney returns a random amount of money.
 func RandomMoney() int64 {
 	return RandomInt(0, 1000000)
