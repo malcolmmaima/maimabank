@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"owner\":\"John Doe\",\r\n    \"currency\":\"USD\"\r\n}",
+					"raw": "{\r\n    \"owner\":\"malcolmmaima\",\r\n    \"currency\":\"GBP\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -64,6 +64,18 @@
 		},
 		{
 			"name": "User Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"pm.environment.set('access_token', response.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -94,11 +106,21 @@
 		{
 			"name": "Money Transfer",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"from_account_id\": 90,\r\n    \"to_account_id\": 100,\r\n    \"amount\": 100000,\r\n    \"currency\":\"EUR\"\r\n}",
+					"raw": "{\r\n    \"from_account_id\": 210,\r\n    \"to_account_id\": 186,\r\n    \"amount\": 600,\r\n    \"currency\":\"GBP\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -122,10 +144,20 @@
 		{
 			"name": "Get Account",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/accounts/501",
+					"raw": "http://localhost:8080/accounts/181",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -133,7 +165,7 @@
 					"port": "8080",
 					"path": [
 						"accounts",
-						"501"
+						"181"
 					]
 				}
 			},
@@ -142,10 +174,20 @@
 		{
 			"name": "List Accounts",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/accounts?page_id=1&page_size=10&owner=malcolmmaima",
+					"raw": "http://localhost:8080/accounts?page_id=1&page_size=10",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -162,10 +204,6 @@
 						{
 							"key": "page_size",
 							"value": "10"
-						},
-						{
-							"key": "owner",
-							"value": "malcolmmaima"
 						}
 					]
 				}
