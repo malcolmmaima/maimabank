@@ -9,8 +9,8 @@ import (
 )
 
 
-var ErrExpiredToken = errors.New("token has expired")
-var ErrInvalidToken = errors.New("invalid token signing method")
+var ErrExpiredToken = errors.New("token has invalid claims: token is expired")
+var ErrInvalidToken = errors.New("token is unverifiable: error while executing keyfunc: invalid token signing method")
 
 // Payload is the output of the token creation process
 type Payload struct {
@@ -33,6 +33,11 @@ func NewPayload(username string, duration time.Duration) (*Payload, error) {
 		Username: username,
 		IssuedAt: time.Now(),
 		ExpiresAt: time.Now().Add(duration),
+		RegisteredClaims: jwt.RegisteredClaims {
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(duration)),
+			IssuedAt: jwt.NewNumericDate(time.Now()),
+			Issuer: "maimabank",
+		},
 	}
 
 	return payload, nil
