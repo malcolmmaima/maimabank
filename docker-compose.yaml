@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=7915
+      - POSTGRES_DB=maima_bank
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    environment:
+      - DB_SOURCE=postgresql://root:7915@localhost:5432/maima_bank?sslmode=disable
+    depends_on:
+      - postgres
+    entrypoint: ['/app/wait-for', 'postgres:5432', '--', '/app/start.sh']
+    command: ['/app/main']
