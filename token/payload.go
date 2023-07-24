@@ -4,12 +4,13 @@ import (
 	"errors"
 	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 )
 
 
-var ErrExpiredToken = errors.New("token has expired")
-var ErrInvalidToken = errors.New("invalid token signing method")
+var ErrExpiredToken = errors.New("token has invalid claims: token is expired")
+var ErrInvalidToken = errors.New("token is unverifiable: error while executing keyfunc: invalid token signing method")
 
 // Payload is the output of the token creation process
 type Payload struct {
@@ -17,6 +18,7 @@ type Payload struct {
 	Username string `json:"username"`
 	IssuedAt time.Time `json:"issued_at"`
 	ExpiresAt time.Time `json:"expires_at"`
+	jwt.RegisteredClaims
 }
 
 // NewPayload creates a new token payload with a specific username and duration
@@ -31,6 +33,11 @@ func NewPayload(username string, duration time.Duration) (*Payload, error) {
 		Username: username,
 		IssuedAt: time.Now(),
 		ExpiresAt: time.Now().Add(duration),
+		RegisteredClaims: jwt.RegisteredClaims {
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(duration)),
+			IssuedAt: jwt.NewNumericDate(time.Now()),
+			Issuer: "maimabank",
+		},
 	}
 
 	return payload, nil
