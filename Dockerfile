@@ -14,13 +14,15 @@ ENV GOPROXY=https://proxy.golang.org,direct
 ENV GOSUMDB=off
 
 # Fetch dependencies using Go Modules
-RUN --mount=type=cache,target=/go/pkg/mod go mod download
-RUN --mount=type=cache,target=/go/pkg/mod go mod vendor
+RUN go mod download
+RUN go mod vendor
 
 # Build the Go application with static linking
-RUN --no-cache CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main main.go
-RUN --no-cache apk add curl
-RUN --no-cache curl -L https://github.com/golang-migrate/migrate/releases/download/v4.14.1/migrate.linux-amd64.tar.gz | tar xvz
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main main.go
+RUN apk add curl
+RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.14.1/migrate.linux-amd64.tar.gz | tar xvz
+RUN chmod a+x start.sh
+RUN chmod a+x wait-for.sh
 
 # Use a minimal base image with Alpine Linux to reduce the image size
 FROM alpine:3.13
@@ -33,7 +35,7 @@ COPY --from=builder /app/main .
 COPY --from=builder /app/migrate.linux-amd64 ./migrate
 COPY app.env .
 COPY start.sh .
-COPY wait-for .
+COPY wait-for.sh .
 COPY db/migration ./db/migration
 
 # Install any necessary dependencies for your application
