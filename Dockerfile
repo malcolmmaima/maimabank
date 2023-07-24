@@ -1,17 +1,5 @@
-# Use the official Alpine Linux image as the base
-FROM alpine:3.13
-
-# Install necessary packages (including Git) and set the Alpine package mirror
-RUN apk update && apk add --no-cache git && \
-    echo "http://dl-cdn.alpinelinux.org/alpine/v3.13/main" > /etc/apk/repositories && \
-    echo "http://dl-cdn.alpinelinux.org/alpine/v3.13/community" >> /etc/apk/repositories
-
-# Set custom DNS servers for the container
-RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf && \
-    echo "nameserver 8.8.4.4" >> /etc/resolv.conf
-
-# Use golang:1.21rc3 as the base image for the Go application
-FROM golang:1.21rc3
+# Use golang:1.21rc3 as the base image for building the Go application
+FROM golang:1.21rc3 AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -31,6 +19,15 @@ RUN go mod vendor
 
 # Build the Go application
 RUN go build -o main main.go
+
+# Use a minimal base image to reduce the image size
+FROM scratch
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the binary from the builder stage to the final image
+COPY --from=builder /app/main .
 
 # Expose port 8080 for the application
 EXPOSE 8080
