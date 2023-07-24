@@ -4,7 +4,7 @@ services:
     image: postgres:12-alpine
     environment:
       - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=7915
+      - POSTGRES_PASSWORD=5628
       - POSTGRES_DB=maima_bank
 
   api:
