@@ -17,8 +17,8 @@ ENV GOSUMDB=off
 RUN go mod download
 RUN go mod vendor
 
-# Build the Go application
-RUN go build -o main main.go
+# Build the Go application with static linking
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main main.go
 
 # Use a minimal base image to reduce the image size
 FROM scratch
@@ -28,6 +28,7 @@ WORKDIR /app
 
 # Copy the binary from the builder stage to the final image
 COPY --from=builder /app/main .
+COPY app.env .
 
 # Expose port 8080 for the application
 EXPOSE 8080
