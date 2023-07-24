@@ -19,7 +19,7 @@ WORKDIR /app
 # Copy the source code into the container
 COPY . .
 
-# Set GOPROXY to use proxy.golang.org as the Go proxy
+# Set GOPROXY to use the specified Go proxy
 ENV GOPROXY=https://proxy.golang.org,direct
 
 # Disable GOSUMDB to skip the checksum verification for modules
