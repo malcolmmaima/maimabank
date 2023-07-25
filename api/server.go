@@ -46,6 +46,7 @@ func NewServer(config util.Config,store db.Store) (*Server, error) {
 	authRoutes.POST("/accounts", server.createAccount)
 	authRoutes.GET("/accounts/:id", server.getAccount)
 	authRoutes.GET("/accounts", server.listAccounts)
+	authRoutes.GET("/accounts/statement", server.listTransfers)
 	authRoutes.POST("/transfers", server.createTransfer)
 	server.router = router
 	return server, nil
