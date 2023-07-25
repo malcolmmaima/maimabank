@@ -20,6 +20,8 @@ MaimaBank is a service that provides APIs to enable the frontend to perform the 
 13. Security Upgrade. Add support for two-factor authentication, security questions, and other security features.
 14. Do let me know of other features you would like to see in the service by raising an issue.
 
+Last Step: Deploy to production and build an Android app to consume the Bank API.
+
 ## Setup local development
 
 ### Install tools
