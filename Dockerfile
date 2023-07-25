@@ -1,5 +1,5 @@
-# Use golang:1.21rc3 as the base image for building the Go application
-FROM golang:1.21rc3 AS builder
+# Use official Go builder image with Alpine Linux as the base
+FROM golang:1.21rc3-alpine AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -19,19 +19,31 @@ RUN go mod vendor
 
 # Build the Go application with static linking
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main main.go
+RUN apk add curl
+RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.14.1/migrate.linux-amd64.tar.gz | tar xvz
+RUN chmod a+x start.sh
+RUN chmod a+x wait-for.sh
 
-# Use a minimal base image to reduce the image size
-FROM scratch
+# Use a minimal base image with Alpine Linux to reduce the image size
+FROM alpine:3.13
 
 # Set the working directory inside the container
 WORKDIR /app
 
 # Copy the binary from the builder stage to the final image
 COPY --from=builder /app/main .
+COPY --from=builder /app/migrate.linux-amd64 ./migrate
 COPY app.env .
+COPY start.sh .
+COPY wait-for.sh .
+COPY db/migration ./db/migration
+
+# Install any necessary dependencies for your application
+# For example, if your application requires SSL certificates, you may need to add them here.
 
 # Expose port 8080 for the application
 EXPOSE 8080
 
 # Set the command to run the application
 CMD ["./main"]
+ENTRYPOINT ["/app/start.sh"]
