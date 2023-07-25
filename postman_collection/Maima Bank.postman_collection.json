@@ -23,7 +23,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"owner\":\"malcolmmaima\",\r\n    \"currency\":\"GBP\"\r\n}",
+					"raw": "{\r\n    \"owner\":\"malcolmmaima2\",\r\n    \"currency\":\"USD\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -51,7 +51,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\":\"malcolmmaima\",\r\n    \"full_name\":\"Malcolm maima\",\r\n    \"email\":\"malcolmmaima@maimabank.com\",\r\n    \"password\":\"secret\"\r\n}",
+					"raw": "{\r\n    \"username\":\"malcolmmaima2\",\r\n    \"full_name\":\"Malcolm 2\",\r\n    \"email\":\"malcolmmaima2@maimabank.com\",\r\n    \"password\":\"secret\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -91,7 +91,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\":\"malcolmmaima\",\r\n    \"password\":\"secret\"\r\n}",
+					"raw": "{\r\n    \"username\":\"malcolmmaima2\",\r\n    \"password\":\"secret\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -130,7 +130,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"from_account_id\": 210,\r\n    \"to_account_id\": 186,\r\n    \"amount\": 600,\r\n    \"currency\":\"GBP\"\r\n}",
+					"raw": "{\r\n    \"from_account_id\": 1,\r\n    \"to_account_id\": 2,\r\n    \"amount\": 3050,\r\n    \"currency\":\"USD\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -167,7 +167,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/accounts/181",
+					"raw": "http://localhost:8080/accounts/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -175,7 +175,51 @@
 					"port": "8080",
 					"path": [
 						"accounts",
-						"181"
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account Statement",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/accounts/statement?page_id=1&page_size=10&account_id=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"statement"
+					],
+					"query": [
+						{
+							"key": "page_id",
+							"value": "1"
+						},
+						{
+							"key": "page_size",
+							"value": "10"
+						},
+						{
+							"key": "account_id",
+							"value": "2"
+						}
 					]
 				}
 			},

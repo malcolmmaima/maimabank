@@ -36,6 +36,13 @@ func (server *Server) createTransfer(ctx *gin.Context) {
 		return
 	}
 
+	// if fromAccount is equal to toAccount, return error
+	if fromAccount.ID == req.ToAccountID {
+		err := errors.New("from account cannot be equal to to account")
+		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+		return
+	}
+
 	_, valid = server.validAccount(ctx, req.ToAccountID, req.Currency)
 	if !valid {
 		return
