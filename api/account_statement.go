@@ -23,6 +23,9 @@ func newTransferResponse(transfers []db.Transfer, userAccountID int64) []db.Tran
 		if transfer.FromAccountID == userAccountID {
 			// Treat it as a debit, so append a negative sign to the amount
 			amount = -amount
+		} else {
+			// Treat it as a credit, so keep the amount positive
+			amount = transfer.Amount
 		}
 
 		// Create the transfer response and append it to the result
