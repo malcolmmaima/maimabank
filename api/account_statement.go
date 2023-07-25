@@ -2,6 +2,7 @@ package api
 
 import (
 	"database/sql"
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -61,6 +62,13 @@ func (server *Server) listTransfers(ctx *gin.Context) {
 			ctx.JSON(http.StatusUnauthorized, errorResponse(err))
 			return
 		}
+
+		if req.AccountID != account.ID {
+			err := errors.New("account does not belong to authenticated user")
+			ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+			return
+		}
+		
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
