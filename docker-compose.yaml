@@ -12,9 +12,9 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "8080:8080"
     environment:
       - DB_SOURCE=postgresql://root:7915@postgres:5432/maima_bank?sslmode=disable
     depends_on:
       - postgres
-    entrypoint: ["/app/wait-for.sh", "postgres:5432", "--", "./main"]
+    entrypoint: ["/app/wait-for.sh", "postgres:5432", "--", "/app/start.sh"]
