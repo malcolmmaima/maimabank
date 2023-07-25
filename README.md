@@ -9,7 +9,7 @@ MaimaBank is a service that provides APIs to enable the frontend to perform the 
 
 #### To-do
 
-5. Add support for multiple currencies. Each account can only hold one currency, and transfers between accounts with different currencies will be automatically converted using the latest exchange rate.
+5. Add support for multiple transfers. Each account can only hold one currency, and transfers between accounts with different currencies will be automatically converted using the latest exchange rate.
 6. Add support for loan accounts. Loan accounts are accounts that can have a negative balance. When a loan account is created, a loan limit is set. The account balance can go down to the negative of the loan limit. For example, if the loan limit is 1000, the account balance can go down to -1000. When a loan account is created, the account balance is set to 0.
 7. Add support for loan repayments. Loan accounts can be topped up by transferring funds from another account. The transfer amount is added to the loan account balance. For example, if the loan account balance is -500 and the transfer amount is 200, the new loan account balance will be -300.
 8. Add support for loan repayments with interest. Loan accounts can be topped up by transferring funds from another account. The transfer amount is added to the loan account balance, and an interest amount is added to the transfer amount. For example, if the loan account balance is -500, the transfer amount is 200, and the interest rate is 10%, the new loan account balance will be -280.
