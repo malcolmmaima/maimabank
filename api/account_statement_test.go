@@ -1,5 +1,3 @@
-// account_statement_test.go
-
 package api
 
 import (
