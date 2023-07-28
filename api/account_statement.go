@@ -107,13 +107,14 @@ func (server *Server) listTransfers(ctx *gin.Context) {
 		}
 	} 
 
-	// if either is zero and the other is not, return error
+	// if either is dates are empty, return error
 	if req.StartDate.IsZero() && !req.EndDate.IsZero() || !req.StartDate.IsZero() && req.EndDate.IsZero() {
 		err := errors.New("both start_date and end_date must be provided")
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
 
+	// if both dates are provided, use ListTransfersByDate query
 	if !req.StartDate.IsZero() && !req.EndDate.IsZero() {
 		transfers, err = server.store.ListTransfersByDate(ctx, listTransfersByDateParams)
 		if err != nil {
@@ -122,6 +123,14 @@ func (server *Server) listTransfers(ctx *gin.Context) {
 		}
 	}
 
+	// if start_date is greater than end_date, return error
+	if req.StartDate.After(req.EndDate) {
+		err := errors.New("start_date cannot be greater than end_date")
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	// if no transfers are found, return empty array
 	if len(transfers) == 0 {
 		ctx.JSON(http.StatusOK, []db.Transfer{})
 		return
