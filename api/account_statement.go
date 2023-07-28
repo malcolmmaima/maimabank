@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	db "github.com/malcolmmaima/maimabank/db/sqlc"
@@ -11,9 +12,11 @@ import (
 )
 
 type getAccountTransfersRequest struct {
-	AccountID int64 `form:"account_id" binding:"required,min=1"`
-	PageID  int32 `form:"page_id" binding:"required,min=1"`
-	PageSize int32 `form:"page_size" binding:"required,min=5,max=10"`
+	AccountID    int64     `form:"account_id" binding:"required,min=1"`
+	PageID       int32     `form:"page_id" binding:"required,min=1"`
+	PageSize     int32     `form:"page_size" binding:"required,min=5,max=10"`
+	StartDate    time.Time `form:"start_date" time_format:"2006-01-02"`
+	EndDate      time.Time `form:"end_date" time_format:"2006-01-02"`
 }
 
 func newTransferResponse(transfers []db.Transfer, userAccountID int64) []db.Transfer {
@@ -85,9 +88,42 @@ func (server *Server) listTransfers(ctx *gin.Context) {
 		Offset: (req.PageID - 1) * req.PageSize,
 	}
 
-	transfers, err := server.store.ListTransfers(ctx, listTransfersParams)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+	listTransfersByDateParams := db.ListTransfersByDateParams{
+		FromAccountID: req.AccountID,
+		ToAccountID: req.AccountID,
+		CreatedAt: req.StartDate,
+		CreatedAt_2: req.EndDate,
+		Limit:  req.PageSize,
+		Offset: (req.PageID - 1) * req.PageSize,
+
+	}
+
+	var transfers []db.Transfer
+	if req.StartDate.IsZero() && req.EndDate.IsZero() {
+		transfers, err = server.store.ListTransfers(ctx, listTransfersParams)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+			return
+		}
+	} 
+
+	// if either is zero and the other is not, return error
+	if req.StartDate.IsZero() && !req.EndDate.IsZero() || !req.StartDate.IsZero() && req.EndDate.IsZero() {
+		err := errors.New("both start_date and end_date must be provided")
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	if !req.StartDate.IsZero() && !req.EndDate.IsZero() {
+		transfers, err = server.store.ListTransfersByDate(ctx, listTransfersByDateParams)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+			return
+		}
+	}
+
+	if len(transfers) == 0 {
+		ctx.JSON(http.StatusOK, []db.Transfer{})
 		return
 	}
 
