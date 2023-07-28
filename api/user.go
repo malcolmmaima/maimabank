@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/lib/pq"
 	db "github.com/malcolmmaima/maimabank/db/sqlc"
 	"github.com/malcolmmaima/maimabank/util"
@@ -17,7 +18,11 @@ type loginUserRequest struct {
 }
 
 type loginUserResponse struct {
+	SessionID uuid.UUID `json:"session_id"`
 	AccessToken string `json:"access_token"`
+	AccessTokenExpiresAt time.Time `json:"access_token_expires_at"`
+	RefreshToken string `json:"refresh_token"`
+	RefreshTokenExpiresAt time.Time `json:"refresh_token_expires_at"`
 	User userResponse `json:"user"`
 }
 
@@ -68,7 +73,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 		return
 	}
 
-	accessToken, err := server.tokenMaker.CreateToken(
+	accessToken, payload, err := server.tokenMaker.CreateToken(
 		user.Username,
 		server.config.AccessTokenDuration,
 	)
@@ -77,8 +82,38 @@ func (server *Server) loginUser(ctx *gin.Context) {
 		return
 	}
 
+	refreshToken, payload, err := server.tokenMaker.CreateToken(
+		user.Username,
+		server.config.RefreshTokenDuration,
+	)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	session, err := server.store.CreateSession(ctx, db.CreateSessionParams{
+		ID: payload.ID,
+		Username: user.Username,
+		RefreshToken: refreshToken,
+		UserAgent: ctx.Request.UserAgent(),
+		ClientIp: ctx.ClientIP(),
+		IsBlocked: false,
+		ExpiresAt: payload.ExpiresAt,
+	})
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+
 	response := loginUserResponse{
+		SessionID: session.ID,
 		AccessToken: accessToken,
+		AccessTokenExpiresAt: payload.ExpiresAt,
+		RefreshToken: refreshToken,
+		RefreshTokenExpiresAt: payload.ExpiresAt,
 		User: newUserResponse(user),
 	}
 	ctx.JSON(http.StatusOK, response)
