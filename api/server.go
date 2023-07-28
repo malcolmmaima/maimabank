@@ -40,6 +40,7 @@ func NewServer(config util.Config,store db.Store) (*Server, error) {
 
 	router.POST("/users", server.createUser)
 	router.POST("/users/login", server.loginUser)
+	router.POST("/users/refresh", server.renewAccessToken)
 
 	// Protected routes
 	authRoutes := router.Group("/").Use(authMiddleware(server.tokenMaker))

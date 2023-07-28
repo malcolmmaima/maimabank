@@ -27,7 +27,7 @@ func RandomString(n int) string {
 
 // A RandomOwner returns a random owner name appending 'test-' to the front.
 func RandomOwner() string {
-	return "test-" + RandomString(10)
+	return "test" + RandomString(10)
 }
 
 // A RandomEmail returns a random email address.
