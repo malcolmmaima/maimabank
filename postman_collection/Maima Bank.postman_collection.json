@@ -239,7 +239,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/accounts/statement?page_id=1&page_size=10&account_id=2",
+					"raw": "http://localhost:8080/accounts/statement?page_id=1&page_size=10&account_id=38&start_date=2023-07-01&end_date=2023-07-30",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -260,7 +260,15 @@
 						},
 						{
 							"key": "account_id",
-							"value": "2"
+							"value": "38"
+						},
+						{
+							"key": "start_date",
+							"value": "2023-07-01"
+						},
+						{
+							"key": "end_date",
+							"value": "2023-07-30"
 						}
 					]
 				}

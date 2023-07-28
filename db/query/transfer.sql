@@ -19,3 +19,13 @@ WHERE
 ORDER BY id
 LIMIT $3
 OFFSET $4;
+
+-- name: ListTransfersByDate :many
+SELECT * FROM transfers
+WHERE 
+    (from_account_id = $1 OR to_account_id = $2)
+    AND created_at >= $3
+    AND created_at <= $4
+ORDER BY id
+LIMIT $5
+OFFSET $6;

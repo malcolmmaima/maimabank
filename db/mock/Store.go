@@ -275,6 +275,21 @@ func (mr *MockStoreMockRecorder) ListTransfers(arg0, arg1 interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTransfers", reflect.TypeOf((*MockStore)(nil).ListTransfers), arg0, arg1)
 }
 
+// ListTransfersByDate mocks base method.
+func (m *MockStore) ListTransfersByDate(arg0 context.Context, arg1 db.ListTransfersByDateParams) ([]db.Transfer, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListTransfersByDate", arg0, arg1)
+	ret0, _ := ret[0].([]db.Transfer)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTransfersByDate indicates an expected call of ListTransfersByDate.
+func (mr *MockStoreMockRecorder) ListTransfersByDate(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTransfersByDate", reflect.TypeOf((*MockStore)(nil).ListTransfersByDate), arg0, arg1)
+}
+
 // TransferTx mocks base method.
 func (m *MockStore) TransferTx(arg0 context.Context, arg1 db.TransferTxParams) (db.TransferTxResult, error) {
 	m.ctrl.T.Helper()
