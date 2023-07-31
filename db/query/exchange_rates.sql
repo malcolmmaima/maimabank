@@ -9,7 +9,9 @@ INSERT INTO exchange_rates (
 
 -- name: GetExchangeRate :one
 SELECT * FROM exchange_rates
-WHERE id = $1 LIMIT 1;
+WHERE base_currency = $1
+AND target_currency = $2
+LIMIT 1;
 
 -- name: ListExchangeRates :many
 SELECT * FROM exchange_rates

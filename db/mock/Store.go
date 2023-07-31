@@ -215,7 +215,7 @@ func (mr *MockStoreMockRecorder) GetEntry(arg0, arg1 interface{}) *gomock.Call {
 }
 
 // GetExchangeRate mocks base method.
-func (m *MockStore) GetExchangeRate(arg0 context.Context, arg1 int64) (db.ExchangeRate, error) {
+func (m *MockStore) GetExchangeRate(arg0 context.Context, arg1 db.GetExchangeRateParams) (db.ExchangeRate, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetExchangeRate", arg0, arg1)
 	ret0, _ := ret[0].(db.ExchangeRate)

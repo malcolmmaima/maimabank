@@ -277,7 +277,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/exchange_rate?currency_id=1",
+					"raw": "http://localhost:8080/exchange_rate?base_currency=USD&target_currency=KES",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -288,8 +288,12 @@
 					],
 					"query": [
 						{
-							"key": "currency_id",
-							"value": "1"
+							"key": "base_currency",
+							"value": "USD"
+						},
+						{
+							"key": "target_currency",
+							"value": "KES"
 						}
 					]
 				}

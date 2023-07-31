@@ -12,30 +12,65 @@ import (
 	"github.com/malcolmmaima/maimabank/util"
 )
 
-// get exchange rate by passing id of currency
+// get exchange rate by passing base currency and target currency
 type exchangeRateRequest struct {
-	CurrencyID int64 `form:"currency_id" binding:"required"`
+	BaseCurrency   string `form:"base_currency" binding:"required,currency"`
+	TargetCurrency string `form:"target_currency" binding:"required,currency"`
 }
 
 func (server *Server) getExchangeRate(ctx *gin.Context) {
 	var req exchangeRateRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
+
+		if req.BaseCurrency == "" || req.TargetCurrency == "" {
+			err := errors.New("base currency and target currency cannot be empty")
+			ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+			return
+		}
+		
+		validCurrency := util.IsSupportedCurrency(req.BaseCurrency)
+		if !validCurrency {
+			err := errors.New("base currency not supported")
+			ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+			return
+		}
+
+		validCurrency = util.IsSupportedCurrency(req.TargetCurrency)
+		if !validCurrency {
+			err := errors.New("target currency not supported")
+			ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+			return
+		}
+
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
 
+	// base currency and target currency should not be the same
+	if req.BaseCurrency == req.TargetCurrency {
+		err := errors.New("base currency cannot be the same as target currency")
+		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+		return
+	}
+
 	// Get exchange rate
-	exchangeRate, err := server.store.GetExchangeRate(ctx, req.CurrencyID)
+	arg := db.GetExchangeRateParams{
+		BaseCurrency:   req.BaseCurrency,
+		TargetCurrency: req.TargetCurrency,
+	}
+	exchangeRate, err := server.store.GetExchangeRate(ctx, arg)
+
 	if err != nil {
+		if err == sql.ErrNoRows {
+			err := errors.New("exchange rate not found")
+			ctx.JSON(http.StatusNotFound, errorResponse(err))
+			return
+		}
+
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
 
-	if err == sql.ErrNoRows {
-		err := errors.New("currency not found")
-		ctx.JSON(http.StatusNotFound, errorResponse(err))
-		return
-	}
 
 	// Return exchange rate
 	ctx.JSON(http.StatusOK, exchangeRate)

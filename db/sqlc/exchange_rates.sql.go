@@ -50,11 +50,18 @@ func (q *Queries) DeleteExchangeRate(ctx context.Context, id int64) error {
 
 const getExchangeRate = `-- name: GetExchangeRate :one
 SELECT id, base_currency, target_currency, exchange_rate, created_at FROM exchange_rates
-WHERE id = $1 LIMIT 1
+WHERE base_currency = $1
+AND target_currency = $2
+LIMIT 1
 `
 
-func (q *Queries) GetExchangeRate(ctx context.Context, id int64) (ExchangeRate, error) {
-	row := q.db.QueryRowContext(ctx, getExchangeRate, id)
+type GetExchangeRateParams struct {
+	BaseCurrency   string `json:"base_currency"`
+	TargetCurrency string `json:"target_currency"`
+}
+
+func (q *Queries) GetExchangeRate(ctx context.Context, arg GetExchangeRateParams) (ExchangeRate, error) {
+	row := q.db.QueryRowContext(ctx, getExchangeRate, arg.BaseCurrency, arg.TargetCurrency)
 	var i ExchangeRate
 	err := row.Scan(
 		&i.ID,

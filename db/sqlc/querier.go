@@ -23,7 +23,7 @@ type Querier interface {
 	GetAccount(ctx context.Context, id int64) (Account, error)
 	GetAccountForUpdate(ctx context.Context, id int64) (Account, error)
 	GetEntry(ctx context.Context, id int64) (Entry, error)
-	GetExchangeRate(ctx context.Context, id int64) (ExchangeRate, error)
+	GetExchangeRate(ctx context.Context, arg GetExchangeRateParams) (ExchangeRate, error)
 	GetSession(ctx context.Context, id uuid.UUID) (Session, error)
 	GetTransfer(ctx context.Context, id int64) (Transfer, error)
 	GetUser(ctx context.Context, username string) (User, error)
