@@ -61,7 +61,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"owner\":\"malcolmmaima2\",\r\n    \"currency\":\"USD\"\r\n}",
+					"raw": "{\r\n    \"base_currency\":\"USD\",\r\n    \"target_currency\":\"KES\",\r\n    \"exchange_rate\":\"140\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -69,14 +69,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/accounts",
+					"raw": "http://localhost:8080/exchange_rate",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"accounts"
+						"exchange_rate"
 					]
 				}
 			},
@@ -277,15 +277,20 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/accounts/2",
+					"raw": "http://localhost:8080/exchange_rate?currency_id=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"accounts",
-						"2"
+						"exchange_rate"
+					],
+					"query": [
+						{
+							"key": "currency_id",
+							"value": "1"
+						}
 					]
 				}
 			},
