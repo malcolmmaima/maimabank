@@ -2,6 +2,7 @@ package api
 
 import (
 	"database/sql"
+	"errors"
 	"net/http"
 	"time"
 
@@ -144,6 +145,7 @@ func (server *Server) createUser(ctx *gin.Context) {
 		if pqErr, ok := err.(*pq.Error); ok {
 			switch pqErr.Code.Name() {
 			case "unique_violation":
+				err := errors.New("username or email already exists")
 				ctx.JSON(http.StatusForbidden, errorResponse(err))
 				return
 			}

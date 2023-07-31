@@ -9,3 +9,6 @@ CREATE TABLE "exchange_rates" (
 CREATE INDEX ON "exchange_rates" ("base_currency");
 
 CREATE INDEX ON "exchange_rates" ("target_currency");
+
+-- add unique constraint on base_currency and target_currency
+ALTER TABLE "exchange_rates" ADD CONSTRAINT "base_currency_target_currency_key" UNIQUE ("base_currency", "target_currency");
