@@ -81,6 +81,21 @@ func (mr *MockStoreMockRecorder) CreateEntry(arg0, arg1 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateEntry", reflect.TypeOf((*MockStore)(nil).CreateEntry), arg0, arg1)
 }
 
+// CreateExchangeRate mocks base method.
+func (m *MockStore) CreateExchangeRate(arg0 context.Context, arg1 db.CreateExchangeRateParams) (db.ExchangeRate, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateExchangeRate", arg0, arg1)
+	ret0, _ := ret[0].(db.ExchangeRate)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateExchangeRate indicates an expected call of CreateExchangeRate.
+func (mr *MockStoreMockRecorder) CreateExchangeRate(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateExchangeRate", reflect.TypeOf((*MockStore)(nil).CreateExchangeRate), arg0, arg1)
+}
+
 // CreateSession mocks base method.
 func (m *MockStore) CreateSession(arg0 context.Context, arg1 db.CreateSessionParams) (db.Session, error) {
 	m.ctrl.T.Helper()
@@ -140,6 +155,20 @@ func (mr *MockStoreMockRecorder) DeleteAccount(arg0, arg1 interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAccount", reflect.TypeOf((*MockStore)(nil).DeleteAccount), arg0, arg1)
 }
 
+// DeleteExchangeRate mocks base method.
+func (m *MockStore) DeleteExchangeRate(arg0 context.Context, arg1 int64) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteExchangeRate", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteExchangeRate indicates an expected call of DeleteExchangeRate.
+func (mr *MockStoreMockRecorder) DeleteExchangeRate(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteExchangeRate", reflect.TypeOf((*MockStore)(nil).DeleteExchangeRate), arg0, arg1)
+}
+
 // GetAccount mocks base method.
 func (m *MockStore) GetAccount(arg0 context.Context, arg1 int64) (db.Account, error) {
 	m.ctrl.T.Helper()
@@ -183,6 +212,21 @@ func (m *MockStore) GetEntry(arg0 context.Context, arg1 int64) (db.Entry, error)
 func (mr *MockStoreMockRecorder) GetEntry(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntry", reflect.TypeOf((*MockStore)(nil).GetEntry), arg0, arg1)
+}
+
+// GetExchangeRate mocks base method.
+func (m *MockStore) GetExchangeRate(arg0 context.Context, arg1 int64) (db.ExchangeRate, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetExchangeRate", arg0, arg1)
+	ret0, _ := ret[0].(db.ExchangeRate)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetExchangeRate indicates an expected call of GetExchangeRate.
+func (mr *MockStoreMockRecorder) GetExchangeRate(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetExchangeRate", reflect.TypeOf((*MockStore)(nil).GetExchangeRate), arg0, arg1)
 }
 
 // GetSession mocks base method.
@@ -260,6 +304,21 @@ func (mr *MockStoreMockRecorder) ListEntries(arg0, arg1 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListEntries", reflect.TypeOf((*MockStore)(nil).ListEntries), arg0, arg1)
 }
 
+// ListExchangeRates mocks base method.
+func (m *MockStore) ListExchangeRates(arg0 context.Context, arg1 string) ([]db.ExchangeRate, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListExchangeRates", arg0, arg1)
+	ret0, _ := ret[0].([]db.ExchangeRate)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListExchangeRates indicates an expected call of ListExchangeRates.
+func (mr *MockStoreMockRecorder) ListExchangeRates(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListExchangeRates", reflect.TypeOf((*MockStore)(nil).ListExchangeRates), arg0, arg1)
+}
+
 // ListTransfers mocks base method.
 func (m *MockStore) ListTransfers(arg0 context.Context, arg1 db.ListTransfersParams) ([]db.Transfer, error) {
 	m.ctrl.T.Helper()
@@ -318,4 +377,19 @@ func (m *MockStore) UpdateAccount(arg0 context.Context, arg1 db.UpdateAccountPar
 func (mr *MockStoreMockRecorder) UpdateAccount(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateAccount", reflect.TypeOf((*MockStore)(nil).UpdateAccount), arg0, arg1)
+}
+
+// UpdateExchangeRate mocks base method.
+func (m *MockStore) UpdateExchangeRate(arg0 context.Context, arg1 db.UpdateExchangeRateParams) (db.ExchangeRate, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateExchangeRate", arg0, arg1)
+	ret0, _ := ret[0].(db.ExchangeRate)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateExchangeRate indicates an expected call of UpdateExchangeRate.
+func (mr *MockStoreMockRecorder) UpdateExchangeRate(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateExchangeRate", reflect.TypeOf((*MockStore)(nil).UpdateExchangeRate), arg0, arg1)
 }
