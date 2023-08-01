@@ -27,7 +27,7 @@ func (server *Server) getExchangeRate(ctx *gin.Context) {
 			ctx.JSON(http.StatusUnauthorized, errorResponse(err))
 			return
 		}
-		
+
 		validCurrency := util.IsSupportedCurrency(req.BaseCurrency)
 		if !validCurrency {
 			err := errors.New("base currency not supported")
@@ -143,4 +143,72 @@ func (server *Server) createExchangeRate(ctx *gin.Context) {
 
 	// Return exchange rate
 	ctx.JSON(http.StatusOK, exchangeRate)
+}
+
+// update exchange rate by passing ID and exchange rate
+type updateExchangeRateRequest struct {
+	ID int64 `json:"id" binding:"required,min=1" uri:"id"`
+	ExchangeRate   string `json:"exchange_rate" binding:"required,gt=0"`
+}
+
+
+func (server *Server) updateExchangeRate(ctx *gin.Context) {
+	var req updateExchangeRateRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	arg := db.UpdateExchangeRateParams{
+		ID:             req.ID,
+		ExchangeRate:   req.ExchangeRate,
+	}
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	if authPayload.Username != "admin" {
+		err := errors.New("only admin can update exchange rates")
+		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+		return
+	}
+
+	// make sure exchange rate is not zero or negative
+	if req.ExchangeRate <= "0" {
+		err := errors.New("exchange rate cannot be zero or negative")
+		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+		return
+	}
+
+	// Update exchange rate
+	exchangeRate, err := server.store.UpdateExchangeRate(ctx, arg)
+	if err != nil {
+		if pqErr, ok := err.(*pq.Error); ok {
+			switch pqErr.Code.Name() {
+			case "unique_violation", "foreign_key_violation":
+				ctx.JSON(http.StatusForbidden, errorResponse(err))
+				return
+			}
+		}
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	// Return exchange rate
+	ctx.JSON(http.StatusOK, exchangeRate)
+}
+
+// list exchange rates
+func (server *Server) listExchangeRates(ctx *gin.Context) {
+	exchangeRates, err := server.store.ListExchangeRates(ctx)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			err := errors.New("no exchange rates found")
+			ctx.JSON(http.StatusNotFound, errorResponse(err))
+			return
+		}
+
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, exchangeRates)
 }

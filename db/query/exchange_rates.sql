@@ -15,7 +15,7 @@ LIMIT 1;
 
 -- name: ListExchangeRates :many
 SELECT * FROM exchange_rates
-WHERE base_currency = $1;
+ORDER BY id DESC;
 
 -- name: UpdateExchangeRate :one
 UPDATE exchange_rates SET

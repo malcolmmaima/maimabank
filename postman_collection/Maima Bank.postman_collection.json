@@ -61,7 +61,45 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"base_currency\":\"USD\",\r\n    \"target_currency\":\"KES\",\r\n    \"exchange_rate\":\"140\"\r\n}",
+					"raw": "{\r\n    \"base_currency\":\"KES\",\r\n    \"target_currency\":\"USD\",\r\n    \"exchange_rate\":\"0.0070\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/exchange_rate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exchange_rate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Exchange Rate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":1,\r\n    \"exchange_rate\":\"140.6\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -295,6 +333,35 @@
 							"key": "target_currency",
 							"value": "KES"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Exchange Rates",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/exchange_rates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exchange_rates"
 					]
 				}
 			},

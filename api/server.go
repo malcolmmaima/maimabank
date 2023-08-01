@@ -42,6 +42,7 @@ func NewServer(config util.Config,store db.Store) (*Server, error) {
 	router.POST("/users/login", server.loginUser)
 	router.POST("/users/refresh", server.renewAccessToken)
 	router.GET("/exchange_rate", server.getExchangeRate)
+	router.GET("/exchange_rates", server.listExchangeRates)
 
 	// Protected routes
 	authRoutes := router.Group("/").Use(authMiddleware(server.tokenMaker))
@@ -51,6 +52,7 @@ func NewServer(config util.Config,store db.Store) (*Server, error) {
 	authRoutes.GET("/accounts/statement", server.listTransfers)
 	authRoutes.POST("/transfers", server.createTransfer)
 	authRoutes.POST("/exchange_rate", server.createExchangeRate)
+	authRoutes.PUT("/exchange_rate", server.updateExchangeRate)
 	server.router = router
 	return server, nil
 }

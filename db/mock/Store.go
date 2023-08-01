@@ -305,18 +305,18 @@ func (mr *MockStoreMockRecorder) ListEntries(arg0, arg1 interface{}) *gomock.Cal
 }
 
 // ListExchangeRates mocks base method.
-func (m *MockStore) ListExchangeRates(arg0 context.Context, arg1 string) ([]db.ExchangeRate, error) {
+func (m *MockStore) ListExchangeRates(arg0 context.Context) ([]db.ExchangeRate, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListExchangeRates", arg0, arg1)
+	ret := m.ctrl.Call(m, "ListExchangeRates", arg0)
 	ret0, _ := ret[0].([]db.ExchangeRate)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ListExchangeRates indicates an expected call of ListExchangeRates.
-func (mr *MockStoreMockRecorder) ListExchangeRates(arg0, arg1 interface{}) *gomock.Call {
+func (mr *MockStoreMockRecorder) ListExchangeRates(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListExchangeRates", reflect.TypeOf((*MockStore)(nil).ListExchangeRates), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListExchangeRates", reflect.TypeOf((*MockStore)(nil).ListExchangeRates), arg0)
 }
 
 // ListTransfers mocks base method.

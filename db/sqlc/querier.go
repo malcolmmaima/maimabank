@@ -29,7 +29,7 @@ type Querier interface {
 	GetUser(ctx context.Context, username string) (User, error)
 	ListAccounts(ctx context.Context, arg ListAccountsParams) ([]Account, error)
 	ListEntries(ctx context.Context, arg ListEntriesParams) ([]Entry, error)
-	ListExchangeRates(ctx context.Context, baseCurrency string) ([]ExchangeRate, error)
+	ListExchangeRates(ctx context.Context) ([]ExchangeRate, error)
 	ListTransfers(ctx context.Context, arg ListTransfersParams) ([]Transfer, error)
 	ListTransfersByDate(ctx context.Context, arg ListTransfersByDateParams) ([]Transfer, error)
 	UpdateAccount(ctx context.Context, arg UpdateAccountParams) (Account, error)
