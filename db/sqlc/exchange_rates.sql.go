@@ -75,7 +75,7 @@ func (q *Queries) GetExchangeRate(ctx context.Context, arg GetExchangeRateParams
 
 const listExchangeRates = `-- name: ListExchangeRates :many
 SELECT id, base_currency, target_currency, exchange_rate, created_at FROM exchange_rates
-ORDER BY id DESC
+ORDER BY base_currency ASC
 `
 
 func (q *Queries) ListExchangeRates(ctx context.Context) ([]ExchangeRate, error) {
