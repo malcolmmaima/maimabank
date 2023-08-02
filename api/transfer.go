@@ -142,6 +142,14 @@ func (server *Server) createMultiCurrencyTransfer(ctx *gin.Context) {
 
 		amount :=  amountToConvert * exchangeRateAmount
 
+		// if amount is less than 1, return error
+		if amount < 1 {
+			increaseAmountTo := strconv.FormatInt(int64(1 / exchangeRateAmount) + 1, 10)
+			err := fmt.Errorf("amount to transfer is less than 1 %s, please increase amount to %s %s or more", toAccount.Currency, req.Currency, increaseAmountTo)
+			ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+			return
+		}
+
 		arg2 := db.TransferTxParams{
 			FromAccountID: req.FromAccountID,
 			ToAccountID:   req.ToAccountID,
