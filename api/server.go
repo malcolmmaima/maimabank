@@ -51,6 +51,7 @@ func NewServer(config util.Config,store db.Store) (*Server, error) {
 	authRoutes.GET("/accounts", server.listAccounts)
 	authRoutes.GET("/accounts/statement", server.listTransfers)
 	authRoutes.POST("/transfers", server.createTransfer)
+	authRoutes.POST("/transfers/multicurrency", server.createMultiCurrencyTransfer)
 	authRoutes.POST("/exchange_rate", server.createExchangeRate)
 	authRoutes.PUT("/exchange_rate", server.updateExchangeRate)
 	server.router = router
