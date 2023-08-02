@@ -26,6 +26,14 @@ type Entry struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type ExchangeRate struct {
+	ID             int64     `json:"id"`
+	BaseCurrency   string    `json:"base_currency"`
+	TargetCurrency string    `json:"target_currency"`
+	ExchangeRate   string    `json:"exchange_rate"`
+	CreatedAt      time.Time `json:"created_at"`
+}
+
 type Session struct {
 	ID           uuid.UUID `json:"id"`
 	Username     string    `json:"username"`

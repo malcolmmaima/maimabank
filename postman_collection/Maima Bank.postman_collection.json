@@ -45,6 +45,82 @@
 			"response": []
 		},
 		{
+			"name": "Create Exchange Rate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"base_currency\":\"KES\",\r\n    \"target_currency\":\"USD\",\r\n    \"exchange_rate\":\"0.0070\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/exchange_rate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exchange_rate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Exchange Rate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":1,\r\n    \"exchange_rate\":\"140.6\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/exchange_rate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exchange_rate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Create User",
 			"request": {
 				"method": "POST",
@@ -156,6 +232,45 @@
 			"response": []
 		},
 		{
+			"name": "Money Transfer (Multi Currency)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"from_account_id\": 2,\r\n    \"to_account_id\": 13,\r\n    \"amount\": 145,\r\n    \"currency\":\"KES\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/transfers/multicurrency",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transfers",
+						"multicurrency"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Money Transfer",
 			"request": {
 				"auth": {
@@ -218,6 +333,60 @@
 					"path": [
 						"accounts",
 						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Exchange Rate",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/exchange_rate?base_currency=USD&target_currency=KES",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exchange_rate"
+					],
+					"query": [
+						{
+							"key": "base_currency",
+							"value": "USD"
+						},
+						{
+							"key": "target_currency",
+							"value": "KES"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Exchange Rates",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/exchange_rates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exchange_rates"
 					]
 				}
 			},
