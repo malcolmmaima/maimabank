@@ -77,7 +77,19 @@ Before setting up the service locally, you need to install the following tools:
 
 ### Setup infrastructure
 
-Coming soon...
+After installing the above tools you can proceed to setup your environment with below steps:
+
+1. Run the following command to setup postgres:
+
+   ```bash
+   make postgres
+   ```
+
+2. Create a new database:
+
+   ```bash
+   make createdb
+   ```
 
 ### How to generate code
 
